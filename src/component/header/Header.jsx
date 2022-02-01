@@ -6,6 +6,7 @@ import AuthenticationService from '../AuthenticationService.js'
 class Header extends React.Component {
     render() {
         let isLoggedIn = AuthenticationService.isUserLoggedIn();
+        const username = AuthenticationService.getUsername();
 
         return (
             <header>
@@ -13,7 +14,7 @@ class Header extends React.Component {
                     <div className="logo"><a>TodoApp</a></div>
                     <ul className="navbar-nav">
                             <li>
-                                <Link className="nav-link item" to="/welcome/username">Home</Link>
+                                <Link className="nav-link item" to={"/welcome/" + username}>Home</Link>
                             </li>
                             <li>
                                 {isLoggedIn && <Link className="nav-link item" to="/todos">Todos</Link>}

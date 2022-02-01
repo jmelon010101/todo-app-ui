@@ -12,6 +12,7 @@ class Welcome extends React.Component {
         this.retrieveWelcome = this.retrieveWelcome.bind(this);
         this.retrieveWelcomeBean = this.retrieveWelcomeBean.bind(this);
         this.retrieveWelcomeBeanWithPathVariable = this.retrieveWelcomeBeanWithPathVariable.bind(this);
+        this.handleError = this.handleError.bind(this);
     }
 
     render() {
@@ -34,11 +35,11 @@ class Welcome extends React.Component {
     }
 
     retrieveWelcome() {
-        HelloWorldService.executeHelloWorldService()
+        HelloWorldService.executeHelloWorldPathVariableService(this.props.username)
         .then(res => {
-            this.setState({welcomeMessage: res.data});
+            this.setState({welcomeMessage: res.data.message});
         }).catch(error => {
-            console.log(error.response.data.message);
+            this.handleError(error);
         });
     }
 
@@ -57,6 +58,18 @@ class Welcome extends React.Component {
             this.setState({welcomeMessage: res.data.message});
         } );
         // .catch()
+    }
+
+    handleError(error) {
+        let errorMessage = "";
+        if (error.message) {
+            errorMessage += error.message;
+        }
+        if (error.response && error.response.data) {
+            errorMessage += error.response.data;
+        }
+
+        this.setState({welcomeMessage: errorMessage});
     }
 
 }

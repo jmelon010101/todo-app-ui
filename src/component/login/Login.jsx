@@ -6,7 +6,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "joe",
+            username: "user",
             password: "password",
             isLoginSuccessful: null,
         }
@@ -19,13 +19,14 @@ class Login extends React.Component {
     }
 
     loginClicked() {
-        if (this.state.username === "joe" && this.state.password === "password") {
-            AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
+        AuthenticationService.executeJwtAuthentication(this.state.username, this.state.password)
+        .then((response) => {
+            AuthenticationService.registerSuccessfulJwtLogin(this.state.username, response.data.token);
             this.setState({isLoginSuccessful:true})
             this.props.navigate(`/welcome/${this.state.username}`);
-        } else {
+        }).catch(
             this.setState({isLoginSuccessful:false})
-        }
+        )
     }
 
     render() {
