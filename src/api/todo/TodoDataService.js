@@ -1,24 +1,26 @@
 import axios from 'axios';
 import AuthenticationService from '../../component/AuthenticationService.js';
+import {JPA_API_BASE_URL} from '../../Constants.js';
+
 class TodoDataService {
     getAllTodosByUser(username) {
-        return axios.get(`http://localhost:8080/users/${username}/todos`);
+        return axios.get(`${JPA_API_BASE_URL}/users/${username}/todos`);
     }
 
     getTodoById(username, id) {
-            return axios.get(`http://localhost:8080/users/${username}/todos/${id}`);
+            return axios.get(`${JPA_API_BASE_URL}/users/${username}/todos/${id}`);
         }
 
     updateTodo(username, id, todo) {
-        return axios.put(`http://localhost:8080/users/${username}/todos/${id}`, todo);
+        return axios.put(`${JPA_API_BASE_URL}/users/${username}/todos/${id}`, todo);
     }
 
     deleteTodo(username, id) {
-        return axios.delete(`http://localhost:8080/users/${username}/todos/${id}`);
+        return axios.delete(`${JPA_API_BASE_URL}/users/${username}/todos/${id}`);
     }
 
     createTodo(username, todo) {
-            return axios.post(`http://localhost:8080/users/${username}/todos`, todo);
+            return axios.post(`${JPA_API_BASE_URL}/users/${username}/todos`, todo);
     }
 
     setupAxiosInterceptors(basicAuthHeader) {

@@ -9,7 +9,7 @@ class TodoComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.id,
+            id: parseInt(this.props.id),
             description: "",
             targetDate: moment(new Date()).format("YYYY-MM-DD")
         }
@@ -37,7 +37,6 @@ class TodoComponent extends React.Component {
            description: values.description,
            targetDate: values.targetDate
         }
-
         if (this.state.id === -1) {
             TodoDataService.createTodo(username, todo)
             .then(
@@ -45,10 +44,12 @@ class TodoComponent extends React.Component {
                     this.props.navigate('/todos');
                 }
             )
+            return;
         }
         TodoDataService.updateTodo(username, this.state.id, todo)
         .then(
             () => {
+                console.log("old")
                 this.props.navigate('/todos');
             }
         )

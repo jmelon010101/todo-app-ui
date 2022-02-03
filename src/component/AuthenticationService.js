@@ -1,4 +1,7 @@
 import axios from 'axios';
+import {API_BASE_URL} from '../Constants.js';
+
+export const SESSION_USER_ATTRIBUTE = "authenticatedUser";
 
 class AuthenticationService {
     executeBasicAuthentication(user, password) {
@@ -7,11 +10,11 @@ class AuthenticationService {
                 authorization: this.createBasicAuthToken(user, password)
             }
         }
-        return axios.get("http://localhost:8080/basic-auth", config);
+        return axios.get(API_BASE_URL+"/basic-auth", config);
     }
 
     executeJwtAuthentication(username, password) {
-        return axios.post("http://localhost:8080/authenticate", {
+        return axios.post(API_BASE_URL+"/authenticate", {
             username,
             password
         });
@@ -22,12 +25,12 @@ class AuthenticationService {
     }
 
     registerSuccessfulLogin(user, password) {
-        sessionStorage.setItem("authenticatedUser", user);
+        sessionStorage.setItem(SESSION_USER_ATTRIBUTE, user);
         this.setupAxiosInterceptors(this.createBasicAuthToken(user, password));
     }
 
     registerSuccessfulJwtLogin(user, token) {
-        sessionStorage.setItem("authenticatedUser", user);
+        sessionStorage.setItem(SESSION_USER_ATTRIBUTE, user);
         this.setupAxiosInterceptors(this.createJwtToken(token));
     }
 
@@ -36,17 +39,17 @@ class AuthenticationService {
         }
 
     logout() {
-        sessionStorage.removeItem("authenticatedUser");
+        sessionStorage.removeItem(SESSION_USER_ATTRIBUTE);
     }
 
     isUserLoggedIn() {
-        let user = sessionStorage.getItem("authenticatedUser");
+        let user = sessionStorage.getItem(SESSION_USER_ATTRIBUTE);
         if (user===null) return false;
         return true;
     }
 
     getUsername() {
-        let user = sessionStorage.getItem("authenticatedUser");
+        let user = sessionStorage.getItem(SESSION_USER_ATTRIBUTE);
         if (user===null) return "user-unauthorized"
         return user;
     }

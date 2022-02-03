@@ -33,6 +33,8 @@ class Todos extends React.Component {
         const username = AuthenticationService.getUsername();
         TodoDataService.deleteTodo(username, id)
         .then(res => {
+
+        }).catch(err => {
             this.setState({message:"Todo with ID of: " + id + ", has been deleted."});
             this.refreshTodos(username);
         });
@@ -61,8 +63,8 @@ class Todos extends React.Component {
                             <tr>
                                 <th>ID</th>
                                 <th>Description</th>
-                                <th>Is Completed?</th>
                                 <th>Target Date</th>
+                                <th>Is Completed?</th>
                                 <th>Delete</th>
                                 <th>Update</th>
                             </tr>
@@ -74,8 +76,8 @@ class Todos extends React.Component {
                                     <tr key = {todo.id}>
                                         <td >{todo.id} </td>
                                         <td >{todo.description} </td>
-                                        <td >{todo.completed.toString()} </td>
                                         <td >{moment(todo.targetDate).format('YYYY-MM-DD')} </td>
+                                        <td >{todo.completed.toString()} </td>
                                         <td ><button onClick={() => this.deleteTodo(todo.id)} className="btn btn-warning">Delete Todo</button> </td>
                                         <td ><button onClick={() => this.updateTodo(todo.id)} className="btn btn-success">Update</button> </td>
                                     </tr>
